@@ -261,7 +261,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallPrefab: {fileID: 3915031578130991168, guid: af7d577e45f98e14e8052975c8790b28, type: 3}
   greenZonePrefab: {fileID: 3915031578130991168, guid: 5d19afd4aeef82e45a793603091e594a, type: 3}
+  dangerZonePrefab: {fileID: 3915031578130991168, guid: eca0e64116a4dd3458896a57510df4f2, type: 3}
   floor: {fileID: 1005414989}
+  track: []
   widthOfMaze: 0
   heightOfMaze: 0
 --- !u!1 &963194225
@@ -454,6 +456,7 @@ GameObject:
   - component: {fileID: 1557527053}
   - component: {fileID: 1557527052}
   - component: {fileID: 1557527051}
+  - component: {fileID: 1557527055}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -537,3 +540,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1557527055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557527050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038c931d8be428c40b76f9488367b646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mazeGenerator: {fileID: 768770201}
+  initialDelay: 2
+  speed: 2

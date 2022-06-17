@@ -15,7 +15,11 @@ public class MazeGenerator : MonoBehaviour
 {
     public GameObject wallPrefab = null;
     public GameObject greenZonePrefab = null;
+    public GameObject dangerZonePrefab = null;
     public GameObject floor = null;
+    public List<Vector2Int> track = new List<Vector2Int>();
+
+
 
     [SerializeField]
     private int widthOfMaze = 0;
@@ -30,8 +34,6 @@ public class MazeGenerator : MonoBehaviour
     private int finishX;
     private int finishZ;
 
-    [SerializeField]
-    private List<Vector2Int> track = new List<Vector2Int>();
 
 
     // Start is called before the first frame update
@@ -45,11 +47,12 @@ public class MazeGenerator : MonoBehaviour
 
         MazeOneInitialization();
 
-        MazeMakeBorders();
-        // MazeGenerateObstacles();
+        MazeGenerateObstacles();
+        // MazeMakeBorders();
         Walker();
         DrawMaze();
         InstantiateGreenZone();
+        GenerateDangerZones();
     }
 
     // Update is called once per frame
@@ -57,6 +60,8 @@ public class MazeGenerator : MonoBehaviour
     {
         
     }
+
+
 
     void DrawMaze() {
         for(int z = 0; z < heightOfMaze; z++) {
@@ -109,24 +114,24 @@ public class MazeGenerator : MonoBehaviour
         Vector2Int final = new Vector2Int(finishX, finishZ);
         while(currentPos != final && i < 1000) {
             MOVE whereToMove = (MOVE)Random.Range(0, 4);
-            Debug.Log(whereToMove);
+            //Debug.Log(whereToMove);
             if(whereToMove == MOVE.UP) {
                 Vector2Int newPos = new Vector2Int(currentPos.x, currentPos.y + 1);
                 currentPos = CheckAndAdd(newPos, currentPos);
                 if(newPos == currentPos) lastIterationMoved = i;
-                HardMove(i, lastIterationMoved, currentPos);
+                currentPos = HardMove(i, lastIterationMoved, currentPos);
             }
             else if(whereToMove == MOVE.DOWN) {
                 Vector2Int newPos = new Vector2Int(currentPos.x, currentPos.y - 1);
                 currentPos = CheckAndAdd(newPos, currentPos);
                 if(newPos == currentPos) lastIterationMoved = i;
-                HardMove(i, lastIterationMoved, currentPos);
+                currentPos = HardMove(i, lastIterationMoved, currentPos);
             }
             else if(whereToMove == MOVE.LEFT) {
                 Vector2Int newPos = new Vector2Int(currentPos.x - 1, currentPos.y);
                 currentPos = CheckAndAdd(newPos, currentPos);
                 if(newPos == currentPos) lastIterationMoved = i;
-                HardMove(i, lastIterationMoved, currentPos);
+                currentPos = HardMove(i, lastIterationMoved, currentPos);
             }
             else if(whereToMove == MOVE.RIGHT) {
                 Vector2Int newPos = new Vector2Int(currentPos.x + 1, currentPos.y);
@@ -136,9 +141,9 @@ public class MazeGenerator : MonoBehaviour
             }
             maze[currentPos.x, currentPos.y] = 0;
             i++;
-            Debug.Log("Result position " + currentPos);
-            Debug.Log("i " + i);
-            Debug.Log("-------------------------");
+            //Debug.Log("Result position " + currentPos);
+            //Debug.Log("i " + i);
+            //Debug.Log("-------------------------");
             
         }
     }
@@ -151,7 +156,7 @@ public class MazeGenerator : MonoBehaviour
             if(diff.x >= 1) currentPos += Vector2Int.right;
             else if(diff.y >= 1) currentPos += Vector2Int.up;
             track.Add(currentPos);
-            Debug.Log("Hard Move");
+            //Debug.Log("Hard Move");
         }
         return currentPos;
     }
@@ -159,22 +164,38 @@ public class MazeGenerator : MonoBehaviour
     Vector2Int CheckAndAdd(Vector2Int newPos, Vector2Int currentPos) {
         if(!track.Contains(newPos) && !IsItBorder(newPos)) {
             track.Add(newPos);
-            Debug.Log("I move");
+            //Debug.Log("I move");
             return newPos;
         }
-        Debug.Log("I won't move");
+        //Debug.Log("I won't move");
         return currentPos;
     }
 
     bool IsItBorder(Vector2Int newPos) {
         if(newPos.x == 0 || newPos.x == widthOfMaze - 1) {
-            Debug.Log("Its a border");
+            //Debug.Log("Its a border");
             return true;
         }
         else if(newPos.y == 0 || newPos.y == heightOfMaze - 1) {
-            Debug.Log("Its a border");
+            //Debug.Log("Its a border");
             return true;
         }
         return false;
     }
+
+    void GenerateDangerZones() {
+        for(int z = 0; z < heightOfMaze; z++) {
+            for(int x = 0; x < widthOfMaze; x++) {
+                if(maze[z, x] == 0 && (z != finishZ && x != finishX))
+                {
+                    int needGenerate = Random.Range(0, 10);
+                    if(needGenerate == 2) {
+                        Vector3 pos = new Vector3((float)x, dangerZonePrefab.transform.position.y, (float)z);
+                        Instantiate(dangerZonePrefab, pos, dangerZonePrefab.transform.rotation);
+                    }
+                }
+            } 
+        }
+    }
 }
+
