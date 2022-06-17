@@ -8,19 +8,16 @@ public class Player : MonoBehaviour
     public MazeGenerator mazeGenerator = null;
     public float initialDelay = 2f;
     public float speed = 2f;
-    public bool underShield = false;
-    public Material activeShield;
-    public Button shieldButton = null;
+    public Material activeShieldMaterial;
+    public ShieldButton shieldButton = null; 
     public GameObject destructablePlayer = null;
-
     public float speedOfDestruction = 4f;
 
+
     private Material playerMaterial;
-    private bool isPlayerRunning = false;
     private int trackIndex = 1;
 
-    private float timeToWaitForShield = 2f;
-    private bool buttonShieldDisabled = false;
+
 
     private void Start() {
         playerMaterial = GetComponent<Renderer>().material;
@@ -31,11 +28,11 @@ public class Player : MonoBehaviour
         if(Time.time > initialDelay) {
             PlayerRun();
         }
-        
+        SwitchPlayerMaterial();
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.CompareTag("Danger")) {
+        if(other.CompareTag("Danger") && shieldButton.shieldActive == false) {
             Destroy(gameObject);
             GameObject newPlayer = Instantiate(destructablePlayer, transform.position, transform.rotation);
             Rigidbody[] rbDestructable = newPlayer.GetComponentsInChildren<Rigidbody>();
@@ -55,36 +52,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void MakeUnderShield(RectTransform shield) {
-        if(buttonShieldDisabled == true)
-            return;
-
-        Invoke("DisableShieldButton", timeToWaitForShield);
-        underShield = true;
-        SwitchPlayerMaterial();
-    }
-
-    public void ReleaseShield(RectTransform shield) {
-        underShield = false;
-        SwitchPlayerMaterial();
-        buttonShieldDisabled = false;
-        shieldButton.interactable = true;
-    }
-
     void SwitchPlayerMaterial() {
-        if(underShield == true) {
-            GetComponent<Renderer>().material = activeShield;
+        if(shieldButton.shieldActive == true) {
+            GetComponent<Renderer>().material = activeShieldMaterial;
         } else {
             GetComponent<Renderer>().material = playerMaterial;
         }
-    }
-
-    private void DisableShieldButton()
-    {
-        shieldButton.interactable = false;
-        buttonShieldDisabled = true;
-        underShield = false;
-        SwitchPlayerMaterial();
-    }
-  
+    } 
 }

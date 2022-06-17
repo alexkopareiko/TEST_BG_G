@@ -364,6 +364,7 @@ MonoBehaviour:
   dangerZonePrefab: {fileID: 3915031578130991168, guid: eca0e64116a4dd3458896a57510df4f2, type: 3}
   floor: {fileID: 1005414989}
   track: []
+  initialDistanceForDanger: 4
   widthOfMaze: 0
   heightOfMaze: 0
 --- !u!1 &963194225
@@ -655,11 +656,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mazeGenerator: {fileID: 768770201}
   initialDelay: 2
-  speed: 2
-  underShield: 0
-  activeShield: {fileID: 2100000, guid: 5233bb5630cfc9c4fa007303ad3b3499, type: 2}
-  shieldButton: {fileID: 1654268708}
+  speed: 5
+  activeShieldMaterial: {fileID: 2100000, guid: 5233bb5630cfc9c4fa007303ad3b3499, type: 2}
+  shieldButton: {fileID: 1654268711}
   destructablePlayer: {fileID: 6510022055131669951, guid: 0aae99eb901ecd74bbb292ce0cf716d6, type: 3}
+  speedOfDestruction: 4
 --- !u!54 &1557527056
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -806,42 +807,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1654268706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Script: {fileID: 11500000, guid: ce8d3a39ec2573d478a61930ec2f3d60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1557527055}
-          m_TargetAssemblyTypeName: Player, Assembly-CSharp
-          m_MethodName: MakeUnderShield
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 1654268707}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 3
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1557527055}
-          m_TargetAssemblyTypeName: Player, Assembly-CSharp
-          m_MethodName: ReleaseShield
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 1654268707}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.RectTransform, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  shieldActive: 0
 --- !u!1 &1964332812
 GameObject:
   m_ObjectHideFlags: 0
