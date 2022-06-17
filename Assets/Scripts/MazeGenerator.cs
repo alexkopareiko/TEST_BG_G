@@ -18,7 +18,7 @@ public class MazeGenerator : MonoBehaviour
     public GameObject dangerZonePrefab = null;
     public GameObject floor = null;
     public List<Vector2Int> track = new List<Vector2Int>();
-
+    public int initialDistanceForDanger = 4;
 
 
     [SerializeField]
@@ -186,7 +186,8 @@ public class MazeGenerator : MonoBehaviour
     void GenerateDangerZones() {
         for(int z = 0; z < heightOfMaze; z++) {
             for(int x = 0; x < widthOfMaze; x++) {
-                if(maze[z, x] == 0 && (z != finishZ && x != finishX))
+                if(maze[z, x] == 0 && (z != finishZ && x != finishX) 
+                    && z > initialDistanceForDanger && x > initialDistanceForDanger)
                 {
                     int needGenerate = Random.Range(0, 10);
                     if(needGenerate == 2) {
