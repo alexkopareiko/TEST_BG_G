@@ -19,7 +19,8 @@ public class MazeGenerator : MonoBehaviour
     public GameObject floor = null;
     public List<Vector2Int> track = new List<Vector2Int>();
     public int initialDistanceForDanger = 4;
-
+    public int initialX = 1;
+    public int initialZ = 1;
 
     [SerializeField]
     private int widthOfMaze = 0;
@@ -29,8 +30,7 @@ public class MazeGenerator : MonoBehaviour
 
     private int[, ] maze;
 
-    private int initialX = 1;
-    private int initialZ = 1;
+
     private int finishX;
     private int finishZ;
 

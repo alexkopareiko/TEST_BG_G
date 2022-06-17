@@ -13,7 +13,6 @@ public class ShieldButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     private void Update() {
         if(shieldActive) {
             buttonTimePressed += Time.deltaTime;
-            Debug.Log(buttonTimePressed);
             if(buttonTimePressed >= timeToWaitForShield) {
                 DisableShieldButton();
             }

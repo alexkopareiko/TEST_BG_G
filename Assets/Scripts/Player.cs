@@ -5,15 +5,17 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public MazeGenerator mazeGenerator = null;
     public float initialDelay = 2f;
     public float speed = 2f;
-    public Material activeShieldMaterial;
-    public ShieldButton shieldButton = null; 
-    public GameObject destructablePlayer = null;
+
+    private Material activeShieldMaterial;
+    private ShieldButton shieldButton = null; 
+    private GameObject destructablePlayer = null;
     public float speedOfDestruction = 4f;
 
 
+
+    private MazeGenerator mazeGenerator = null;
     private Material playerMaterial;
     private int trackIndex = 1;
 
@@ -21,6 +23,10 @@ public class Player : MonoBehaviour
 
     private void Start() {
         playerMaterial = GetComponent<Renderer>().material;
+        mazeGenerator = SpawnManager.instance.mazeGenerator;
+        shieldButton = SpawnManager.instance.shieldButton;
+        destructablePlayer = SpawnManager.instance.destructablePlayer;
+        activeShieldMaterial = SpawnManager.instance.activeShieldMaterial;
     }
 
     void Update()
@@ -33,12 +39,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag("Danger") && shieldButton.shieldActive == false) {
-            Destroy(gameObject);
-            GameObject newPlayer = Instantiate(destructablePlayer, transform.position, transform.rotation);
-            Rigidbody[] rbDestructable = newPlayer.GetComponentsInChildren<Rigidbody>();
-            foreach(Rigidbody rb in rbDestructable) {
-                rb.AddRelativeForce(Random.onUnitSphere * speedOfDestruction);
-            }
+            Die();
+        }
+    }
+
+ 
+
+    void Die() {
+        Destroy(gameObject);
+        GameObject newPlayer = Instantiate(destructablePlayer, transform.position, transform.rotation);
+        Rigidbody[] rbDestructable = newPlayer.GetComponentsInChildren<Rigidbody>();
+        foreach(Rigidbody rb in rbDestructable) {
+            rb.AddRelativeForce(Random.onUnitSphere * speedOfDestruction);
         }
     }
 
